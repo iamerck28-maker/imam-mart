@@ -64,7 +64,7 @@
         </div>
     </header>
 
-    <!-- Menu Utama -->
+    <!-- Navigasi Utama -->
     <nav class="bg-white border-b border-slate-50 sticky top-[69px] z-40">
         <div class="container mx-auto px-6 flex justify-center space-x-12 overflow-x-auto no-scrollbar">
             <button onclick="showTab('dashboard')" id="btn-dashboard" class="nav-link py-4 text-xs text-slate-400 transition-all whitespace-nowrap active-nav uppercase tracking-widest">Dashboard</button>
@@ -142,16 +142,16 @@
             </div>
         </div>
         
-        <!-- Tab Kasir -->
+        <!-- KASIR -->
         <div id="kasir" class="tab-content space-y-6">
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-2/3">
                     <div class="flex space-x-3 overflow-x-auto no-scrollbar pb-4" id="category-tabs">
-                        <button onclick="filterCategory('Semua')" class="cat-filter bg-[#a50000] text-white px-6 py-2 rounded-full text-xs font-medium whitespace-nowrap">Semua</button>
-                        <button onclick="filterCategory('Sembako')" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Sembako</button>
-                        <button onclick="filterCategory('Minuman')" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Minuman</button>
-                        <button onclick="filterCategory('Camilan')" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Camilan</button>
-                        <button onclick="filterCategory('ATK')" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Alat Tulis</button>
+                        <button onclick="filterCategory('Semua', this)" class="cat-filter bg-[#a50000] text-white px-6 py-2 rounded-full text-xs font-medium whitespace-nowrap">Semua</button>
+                        <button onclick="filterCategory('Sembako', this)" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Sembako</button>
+                        <button onclick="filterCategory('Minuman', this)" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Minuman</button>
+                        <button onclick="filterCategory('Camilan', this)" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Camilan</button>
+                        <button onclick="filterCategory('ATK', this)" class="cat-filter bg-white text-slate-400 px-6 py-2 rounded-full text-xs font-medium border border-slate-100 whitespace-nowrap">Alat Tulis</button>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="produk-list"></div>
                 </div>
@@ -174,7 +174,7 @@
             </div>
         </div>
 
-        <!-- Tab Stok -->
+        <!-- STOK -->
         <div id="stok" class="tab-content">
             <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden custom-shadow">
                 <div class="p-8 border-b flex justify-between items-center">
@@ -198,10 +198,9 @@
             </div>
         </div>
 
-        <!-- Tab Laporan -->
+        <!-- LAPORAN -->
         <div id="laporan" class="tab-content space-y-6">
             <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden custom-shadow">
-                <!-- Header Laporan: Rata Kiri & Rata Kanan -->
                 <div class="p-8 border-b flex justify-between items-center">
                     <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
                         <h2 class="text-lg font-bold text-slate-800 uppercase tracking-tighter">Laporan Penjualan</h2>
@@ -230,13 +229,13 @@
                         <p class="text-2xl font-medium text-[#a50000]" id="stat-profit">Rp 0</p>
                     </div>
                 </div>
-                <div id="history-list" class="divide-y divide-slate-50"></div>
+                <div id="history-list" class="divide-y divide-slate-50 max-h-[500px] overflow-y-auto no-scrollbar"></div>
             </div>
         </div>
 
     </main>
 
-    <!-- Modal -->
+    <!-- Modal Tambah Barang -->
     <div id="add-modal" class="fixed inset-0 bg-slate-900/40 hidden flex items-center justify-center p-4 z-[100] backdrop-blur-sm">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl">
             <h3 class="text-lg font-bold mb-6 text-slate-900 uppercase tracking-tighter">Tambah Data Barang</h3>
@@ -261,6 +260,7 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-full opacity-0 transition-all duration-300 pointer-events-none shadow-2xl z-[200]">
         <span id="toast-msg" class="text-[9px] font-bold uppercase tracking-widest"></span>
     </div>
@@ -268,6 +268,7 @@
     <script>
         const TARGET_BULANAN = 20000000;
 
+        // Inisialisasi Data Inventaris
         let inventory = [
             { id: 1, nama: 'Beras Pandan Wangi 5kg', beli: 68000, jual: 82000, stok: 15, kategori: 'Sembako' },
             { id: 2, nama: 'Minyak Goreng 2L', beli: 31000, jual: 36500, stok: 24, kategori: 'Sembako' },
@@ -279,6 +280,7 @@
             { id: 81, nama: 'Buku Tulis Sidu 38', beli: 35000, jual: 45000, stok: 15, kategori: 'ATK' }
         ];
 
+        // Inisialisasi Data Riwayat Penjualan (Tersinkronisasi)
         let history = [
             { id: 9001, waktu: '08:12', tanggal: '2026-03-01', total: 164000, laba: 28000, items: 'Beras Pandan Wangi 5kg (x2)' }
         ];
@@ -307,25 +309,30 @@
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active-nav'));
             document.getElementById('btn-' + tabId).classList.add('active-nav');
             
+            // Refresh data setiap kali pindah tab agar selalu tersinkron
             if(tabId === 'dashboard') renderDashboard();
             if(tabId === 'laporan') updateStats();
             if(tabId === 'stok') renderStok();
             if(tabId === 'kasir') renderProdukKasir();
         }
 
+        // --- DASHBOARD LOGIC ---
         function renderDashboard() {
             const now = new Date();
-            const currentMonth = now.getMonth() + 1;
+            const currentMonth = now.getMonth() + 1; // 1-12
             const currentYear = now.getFullYear();
             
+            // Hitung omzet bulan ini berdasarkan array history
             const omzetMonth = history.filter(h => {
                 const parts = h.tanggal.split('-');
                 return parseInt(parts[1]) === currentMonth && parseInt(parts[0]) === currentYear;
             }).reduce((sum, h) => sum + h.total, 0);
 
-            const todayStr = now.toISOString().split('T')[0];
+            // Hitung laba hari ini
+            const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             const profitToday = history.filter(h => h.tanggal === todayStr).reduce((sum, h) => sum + h.laba, 0);
 
+            // Aset dan Stok
             const assetValue = inventory.reduce((sum, item) => sum + (item.beli * item.stok), 0);
             const totalItems = inventory.reduce((sum, item) => sum + item.stok, 0);
 
@@ -334,9 +341,11 @@
             document.getElementById('dash-total-items').innerText = `${totalItems.toLocaleString('id-ID')} Unit`;
             document.getElementById('dash-profit-today').innerText = `Rp ${profitToday.toLocaleString('id-ID')}`;
 
+            // Progress Bar Target
             const percentage = Math.min((omzetMonth / TARGET_BULANAN) * 100, 100);
             document.getElementById('progress-bar').style.width = percentage + '%';
 
+            // List Persediaan Tertinggi
             const topList = document.getElementById('dash-top-items');
             topList.innerHTML = '';
             [...inventory].sort((a,b) => b.stok - a.stok).slice(0, 5).forEach(item => {
@@ -346,17 +355,34 @@
                 topList.appendChild(div);
             });
 
-            document.getElementById('ai-insight-text').innerText = omzetMonth > 1000000 ? "Performa bulan ini cukup baik, pertahankan stok barang utama." : "Bulan baru dimulai. Ayo tingkatkan penjualan!";
+            // AI Insight
+            const insightText = document.getElementById('ai-insight-text');
+            const statusVal = document.getElementById('ai-status-val');
+            
+            if (omzetMonth >= TARGET_BULANAN) {
+                insightText.innerText = "Luar biasa! Target bulanan tercapai. Pertimbangkan ekspansi stok.";
+                statusVal.innerText = "Sangat Baik";
+                statusVal.className = "text-sm font-bold text-emerald-600";
+            } else if (omzetMonth > (TARGET_BULANAN * 0.5)) {
+                insightText.innerText = "Performa stabil. Fokus pada item paling laris untuk mengejar target.";
+                statusVal.innerText = "Stabil";
+                statusVal.className = "text-sm font-bold text-blue-600";
+            } else {
+                insightText.innerText = "Penjualan masih di bawah target awal. Coba strategi promosi harian.";
+                statusVal.innerText = "Perlu Perhatian";
+                statusVal.className = "text-sm font-bold text-amber-600";
+            }
         }
 
-        function filterCategory(cat) {
+        // --- KASIR LOGIC ---
+        function filterCategory(cat, el) {
             currentCategoryFilter = cat;
             document.querySelectorAll('.cat-filter').forEach(btn => {
                 btn.classList.replace('bg-[#a50000]', 'bg-white');
                 btn.classList.replace('text-white', 'text-slate-400');
             });
-            event.target.classList.replace('bg-white', 'bg-[#a50000]');
-            event.target.classList.replace('text-slate-400', 'text-white');
+            el.classList.replace('bg-white', 'bg-[#a50000]');
+            el.classList.replace('text-slate-400', 'text-white');
             renderProdukKasir();
         }
 
@@ -380,6 +406,7 @@
         function addToCart(id) {
             const item = inventory.find(i => i.id === id);
             if(item.stok <= 0) return showToast("Stok Habis!");
+            
             const inCart = cart.find(c => c.id === id);
             if (inCart) {
                 if (inCart.qty < item.stok) inCart.qty++;
@@ -425,34 +452,39 @@
             if (cart.length === 0) return showToast("Keranjang Kosong!");
             
             let totalV = cart.reduce((sum, i) => sum + (i.jual * i.qty), 0);
-            let labaV = cart.reduce((sum, i) => sum + ((i.jual - i.beli) * i.qty), 0);
+            let totalBeli = cart.reduce((sum, i) => sum + (i.beli * i.qty), 0);
+            let labaV = totalV - totalBeli;
             
+            // Update Stok di Inventory
             cart.forEach(item => {
                 const invItem = inventory.find(i => i.id === item.id);
                 if(invItem) invItem.stok -= item.qty;
             });
             
+            // Catat ke History
             const now = new Date();
-            const localDateStr = now.toISOString().split('T')[0];
+            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
             
             history.unshift({
                 id: Date.now(),
-                waktu: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                tanggal: localDateStr,
+                waktu: timeStr,
+                tanggal: dateStr,
                 total: totalV,
                 laba: labaV,
                 items: cart.map(c => `${c.nama} (x${c.qty})`).join(', ')
             });
             
+            // Reset Kasir
             cart = [];
             renderCart();
             renderProdukKasir();
-            renderStok();
-            renderDashboard();
-            updateStats();
+            
+            // Feedback
             showToast("Transaksi Berhasil!");
         }
 
+        // --- STOK LOGIC ---
         function renderStok() {
             const body = document.getElementById('stok-table-body');
             body.innerHTML = '';
@@ -469,13 +501,30 @@
             });
         }
 
+        function tambahBarang() {
+            const nama = document.getElementById('in-nama').value;
+            const beli = parseInt(document.getElementById('in-beli').value);
+            const jual = parseInt(document.getElementById('in-jual').value);
+            const stok = parseInt(document.getElementById('in-stok').value);
+            const kategori = document.getElementById('in-kategori').value;
+
+            if(!nama || isNaN(beli) || isNaN(jual) || isNaN(stok)) return showToast("Data tidak lengkap!");
+            
+            inventory.push({ id: Date.now(), nama, beli, jual, stok, kategori });
+            toggleAddModal(); 
+            renderStok();
+            showToast("Produk Ditambah");
+        }
+
         function hapusBarang(id) {
             inventory = inventory.filter(i => i.id !== id);
             renderStok();
-            renderDashboard();
             showToast("Barang Dihapus");
         }
 
+        function toggleAddModal() { document.getElementById('add-modal').classList.toggle('hidden'); }
+
+        // --- LAPORAN LOGIC ---
         function updateStats() {
             const filterBulan = parseInt(document.getElementById('filter-bulan').value);
             const filtered = history.filter(h => {
@@ -492,13 +541,19 @@
             
             const list = document.getElementById('history-list');
             list.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="p-8 text-center text-[10px] text-slate-400 uppercase tracking-widest">Tidak ada data penjualan</div>';
+                return;
+            }
+
             filtered.forEach(h => {
                 const div = document.createElement('div');
                 div.className = "p-6 flex justify-between items-center border-b border-slate-50";
                 div.innerHTML = `
                     <div>
                         <p class="text-[8px] font-bold text-slate-300 uppercase">${h.tanggal} — ${h.waktu}</p>
-                        <p class="text-[10px] text-slate-500">${h.items}</p>
+                        <p class="text-[10px] text-slate-500 truncate max-w-[250px]">${h.items}</p>
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-light">Rp ${h.total.toLocaleString('id-ID')}</div>
@@ -523,15 +578,7 @@
             doc.setFontSize(10);
             doc.setTextColor(100);
             doc.text(`Periode: ${bulanText}`, 14, 28);
-            doc.text(`Tanggal Cetak: ${new Date().toLocaleString('id-ID')}`, 14, 33);
-
-            const omzet = document.getElementById('stat-omzet').innerText;
-            const profit = document.getElementById('stat-profit').innerText;
-            
-            doc.setFontSize(11);
-            doc.setTextColor(0);
-            doc.text(`Total Omzet: ${omzet}`, 14, 45);
-            doc.text(`Total Laba Bersih: ${profit}`, 14, 52);
+            doc.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 14, 33);
 
             const filterBulanVal = parseInt(filterBulan.value);
             const filteredData = history.filter(h => {
@@ -540,9 +587,16 @@
                 return parseInt(parts[1]) === filterBulanVal;
             });
 
+            const omzet = filteredData.reduce((s, h) => s + h.total, 0);
+            const laba = filteredData.reduce((s, h) => s + h.laba, 0);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(0);
+            doc.text(`Total Omzet: Rp ${omzet.toLocaleString('id-ID')}`, 14, 45);
+            doc.text(`Total Laba: Rp ${laba.toLocaleString('id-ID')}`, 14, 52);
+
             const tableRows = filteredData.map(h => [
                 h.tanggal,
-                h.waktu,
                 h.items,
                 `Rp ${h.total.toLocaleString('id-ID')}`,
                 `Rp ${h.laba.toLocaleString('id-ID')}`
@@ -550,33 +604,19 @@
 
             doc.autoTable({
                 startY: 60,
-                head: [['Tanggal', 'Waktu', 'Item Terjual', 'Total', 'Laba']],
+                head: [['Tanggal', 'Item', 'Total', 'Laba']],
                 body: tableRows,
                 theme: 'grid',
                 headStyles: { fillColor: [165, 0, 0] },
                 styles: { fontSize: 8 },
                 columnStyles: {
-                    3: { halign: 'right' },
-                    4: { halign: 'right' }
+                    2: { halign: 'right' },
+                    3: { halign: 'right' }
                 }
             });
 
             doc.save(`Laporan_ImamMart_${bulanText.replace(' ', '_')}.pdf`);
             showToast("PDF Berhasil Diunduh");
-        }
-
-        function toggleAddModal() { document.getElementById('add-modal').classList.toggle('hidden'); }
-
-        function tambahBarang() {
-            const nama = document.getElementById('in-nama').value;
-            const beli = parseInt(document.getElementById('in-beli').value);
-            const jual = parseInt(document.getElementById('in-jual').value);
-            const stok = parseInt(document.getElementById('in-stok').value);
-            const kategori = document.getElementById('in-kategori').value;
-
-            if(!nama || isNaN(beli)) return showToast("Data tidak valid");
-            inventory.push({ id: Date.now(), nama, beli, jual, stok, kategori });
-            toggleAddModal(); renderStok(); renderDashboard(); showToast("Produk Ditambah");
         }
 
         function showToast(m) {
