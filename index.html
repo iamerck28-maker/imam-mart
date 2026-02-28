@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imam Mart - Dashboard POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -75,7 +78,6 @@
         
         <!-- DASHBOARD -->
         <div id="dashboard" class="tab-content active space-y-6">
-            
             <div class="bg-white p-8 rounded-[2rem] border border-slate-100 custom-shadow flex flex-col md:flex-row justify-between items-start md:items-center relative overflow-hidden w-full">
                 <div class="z-10 text-left w-full md:w-auto">
                     <div class="flex items-center space-x-2 mb-2 justify-start">
@@ -199,15 +201,25 @@
         <!-- Tab Laporan -->
         <div id="laporan" class="tab-content space-y-6">
             <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden custom-shadow">
-                <div class="p-8 border-b flex flex-col md:flex-row justify-between items-center gap-4">
-                    <h2 class="text-lg font-semibold text-slate-800">Laporan Penjualan</h2>
-                    <select id="filter-bulan" onchange="updateStats()" class="bg-slate-50 text-xs font-bold text-slate-600 rounded-xl border-none px-4 py-2">
-                        <option value="0">Semua Waktu</option>
-                        <option value="1">Januari 2026</option>
-                        <option value="2">Februari 2026</option>
-                        <option value="3" selected>Maret 2026</option>
-                    </select>
+                <!-- Header Laporan: Rata Kiri & Rata Kanan -->
+                <div class="p-8 border-b flex justify-between items-center">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                        <h2 class="text-lg font-bold text-slate-800 uppercase tracking-tighter">Laporan Penjualan</h2>
+                        <select id="filter-bulan" onchange="updateStats()" class="bg-slate-50 text-[10px] font-bold text-slate-500 rounded-xl border-none px-4 py-2 uppercase tracking-widest cursor-pointer">
+                            <option value="0">Semua Waktu</option>
+                            <option value="1">Januari 2026</option>
+                            <option value="2">Februari 2026</option>
+                            <option value="3" selected>Maret 2026</option>
+                        </select>
+                    </div>
+                    <button onclick="exportToPDF()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export to PDF
+                    </button>
                 </div>
+                
                 <div class="p-8 border-b bg-slate-50/20 grid grid-cols-2 gap-8">
                     <div>
                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Penjualan Terpilih</p>
@@ -256,13 +268,15 @@
     <script>
         const TARGET_BULANAN = 20000000;
 
-        // STATE UTAMA
         let inventory = [
             { id: 1, nama: 'Beras Pandan Wangi 5kg', beli: 68000, jual: 82000, stok: 15, kategori: 'Sembako' },
             { id: 2, nama: 'Minyak Goreng 2L', beli: 31000, jual: 36500, stok: 24, kategori: 'Sembako' },
             { id: 3, nama: 'Aqua Galon 19L', beli: 17000, jual: 21000, stok: 12, kategori: 'Minuman' },
             { id: 4, nama: 'Indomie Goreng (Kardus)', beli: 110000, jual: 125000, stok: 8, kategori: 'Sembako' },
-            { id: 5, nama: 'Susu UHT 1L', beli: 16500, jual: 20500, stok: 20, kategori: 'Minuman' }
+            { id: 5, nama: 'Susu UHT 1L', beli: 16500, jual: 20500, stok: 20, kategori: 'Minuman' },
+            { id: 31, nama: 'Teh Pucuk 350ml', beli: 3000, jual: 4000, stok: 48, kategori: 'Minuman' },
+            { id: 56, nama: 'Chitato Sapi Panggang', beli: 9500, jual: 12000, stok: 20, kategori: 'Camilan' },
+            { id: 81, nama: 'Buku Tulis Sidu 38', beli: 35000, jual: 45000, stok: 15, kategori: 'ATK' }
         ];
 
         let history = [
@@ -293,7 +307,6 @@
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active-nav'));
             document.getElementById('btn-' + tabId).classList.add('active-nav');
             
-            // Re-render saat pindah tab agar data selalu fresh
             if(tabId === 'dashboard') renderDashboard();
             if(tabId === 'laporan') updateStats();
             if(tabId === 'stok') renderStok();
@@ -305,21 +318,14 @@
             const currentMonth = now.getMonth() + 1;
             const currentYear = now.getFullYear();
             
-            // Perbaikan: Gunakan waktu lokal, hindari masalah zona waktu dari toISOString()
-            const localMonth = String(currentMonth).padStart(2, '0');
-            const localDay = String(now.getDate()).padStart(2, '0');
-            const todayStr = `${currentYear}-${localMonth}-${localDay}`;
-
-            // Omzet Bulan Ini
             const omzetMonth = history.filter(h => {
                 const parts = h.tanggal.split('-');
                 return parseInt(parts[1]) === currentMonth && parseInt(parts[0]) === currentYear;
             }).reduce((sum, h) => sum + h.total, 0);
 
-            // Laba Hari Ini
+            const todayStr = now.toISOString().split('T')[0];
             const profitToday = history.filter(h => h.tanggal === todayStr).reduce((sum, h) => sum + h.laba, 0);
 
-            // Total Aset
             const assetValue = inventory.reduce((sum, item) => sum + (item.beli * item.stok), 0);
             const totalItems = inventory.reduce((sum, item) => sum + item.stok, 0);
 
@@ -421,17 +427,13 @@
             let totalV = cart.reduce((sum, i) => sum + (i.jual * i.qty), 0);
             let labaV = cart.reduce((sum, i) => sum + ((i.jual - i.beli) * i.qty), 0);
             
-            // Kurangi Stok
             cart.forEach(item => {
                 const invItem = inventory.find(i => i.id === item.id);
                 if(invItem) invItem.stok -= item.qty;
             });
             
-            // Catat History dengan Format Tanggal Lokal
             const now = new Date();
-            const localMonth = String(now.getMonth() + 1).padStart(2, '0');
-            const localDay = String(now.getDate()).padStart(2, '0');
-            const localDateStr = `${now.getFullYear()}-${localMonth}-${localDay}`;
+            const localDateStr = now.toISOString().split('T')[0];
             
             history.unshift({
                 id: Date.now(),
@@ -505,6 +507,62 @@
                 `;
                 list.appendChild(div);
             });
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const filterBulan = document.getElementById('filter-bulan');
+            const bulanText = filterBulan.options[filterBulan.selectedIndex].text;
+            
+            doc.setFontSize(18);
+            doc.setTextColor(165, 0, 0);
+            doc.text("IMAM MART - LAPORAN PENJUALAN", 14, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text(`Periode: ${bulanText}`, 14, 28);
+            doc.text(`Tanggal Cetak: ${new Date().toLocaleString('id-ID')}`, 14, 33);
+
+            const omzet = document.getElementById('stat-omzet').innerText;
+            const profit = document.getElementById('stat-profit').innerText;
+            
+            doc.setFontSize(11);
+            doc.setTextColor(0);
+            doc.text(`Total Omzet: ${omzet}`, 14, 45);
+            doc.text(`Total Laba Bersih: ${profit}`, 14, 52);
+
+            const filterBulanVal = parseInt(filterBulan.value);
+            const filteredData = history.filter(h => {
+                if (filterBulanVal === 0) return true;
+                const parts = h.tanggal.split('-');
+                return parseInt(parts[1]) === filterBulanVal;
+            });
+
+            const tableRows = filteredData.map(h => [
+                h.tanggal,
+                h.waktu,
+                h.items,
+                `Rp ${h.total.toLocaleString('id-ID')}`,
+                `Rp ${h.laba.toLocaleString('id-ID')}`
+            ]);
+
+            doc.autoTable({
+                startY: 60,
+                head: [['Tanggal', 'Waktu', 'Item Terjual', 'Total', 'Laba']],
+                body: tableRows,
+                theme: 'grid',
+                headStyles: { fillColor: [165, 0, 0] },
+                styles: { fontSize: 8 },
+                columnStyles: {
+                    3: { halign: 'right' },
+                    4: { halign: 'right' }
+                }
+            });
+
+            doc.save(`Laporan_ImamMart_${bulanText.replace(' ', '_')}.pdf`);
+            showToast("PDF Berhasil Diunduh");
         }
 
         function toggleAddModal() { document.getElementById('add-modal').classList.toggle('hidden'); }
