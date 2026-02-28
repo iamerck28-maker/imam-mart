@@ -76,11 +76,7 @@
         <!-- DASHBOARD -->
         <div id="dashboard" class="tab-content active space-y-6">
             
-            <!-- Card Omzet Utama (Rata Kiri) -->
             <div class="bg-white p-8 rounded-[2rem] border border-slate-100 custom-shadow flex flex-col md:flex-row justify-between items-start md:items-center relative overflow-hidden w-full">
-                <div class="absolute right-0 top-0 opacity-5 transform translate-x-1/4 -translate-y-1/4 pointer-events-none">
-                    <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                </div>
                 <div class="z-10 text-left w-full md:w-auto">
                     <div class="flex items-center space-x-2 mb-2 justify-start">
                         <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
@@ -98,43 +94,29 @@
                 </div>
             </div>
 
-            <!-- Tiga Card Statistik dalam 1 Baris Horizontal -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                <!-- Total Aset -->
                 <div class="bg-indigo-50/50 p-6 rounded-[1.5rem] border border-indigo-100 custom-shadow flex flex-col justify-between h-32">
                     <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-indigo-500 rounded-lg shrink-0">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
                         <p class="text-[9px] font-bold text-indigo-400 uppercase tracking-widest">Total Aset</p>
                     </div>
                     <h3 class="text-xl font-light text-indigo-900 truncate" id="dash-asset-value">Rp 0</h3>
                 </div>
 
-                <!-- Laba Hari Ini -->
                 <div class="bg-[#fff5f5] p-6 rounded-[1.5rem] border border-[#feb2b2] custom-shadow flex flex-col justify-between h-32">
                     <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-[#a50000] rounded-lg shrink-0">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                        </div>
                         <p class="text-[9px] font-bold text-[#a50000] uppercase tracking-widest">Laba Hari Ini</p>
                     </div>
                     <h3 class="text-xl font-medium text-[#a50000] truncate" id="dash-profit-today">Rp 0</h3>
                 </div>
 
-                <!-- Unit Barang -->
                 <div class="bg-emerald-50/50 p-6 rounded-[1.5rem] border border-emerald-100 custom-shadow flex flex-col justify-between h-32">
                     <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-emerald-500 rounded-lg shrink-0">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                        </div>
                         <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Unit Barang</p>
                     </div>
                     <h3 class="text-xl font-light text-emerald-900 truncate" id="dash-total-items">0 Unit</h3>
                 </div>
             </div>
 
-            <!-- Analitik AI -->
             <div class="bg-soft-trend rounded-[2rem] p-8 text-slate-900 relative overflow-hidden shadow-sm">
                 <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
@@ -142,14 +124,8 @@
                             <span class="bg-yellow-200/50 text-[9px] font-bold px-3 py-1 rounded-full uppercase border border-yellow-300/50 text-yellow-800">Trend & Insight Bisnis</span>
                             <h2 class="text-lg font-extrabold tracking-tight uppercase text-slate-800">Analisis Performa</h2>
                         </div>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed mb-4" id="ai-insight-text">
-                            Menghitung data tren...
-                        </p>
+                        <p class="text-slate-600 text-sm font-light leading-relaxed mb-4" id="ai-insight-text">Menghitung data...</p>
                         <div class="flex space-x-2">
-                            <div class="bg-white/60 px-3 py-2 rounded-xl border border-yellow-200/50">
-                                <p class="text-[8px] font-bold text-slate-400 uppercase">Growth</p>
-                                <p class="text-sm font-bold text-emerald-600" id="ai-growth-val">+0%</p>
-                            </div>
                             <div class="bg-white/60 px-3 py-2 rounded-xl border border-yellow-200/50">
                                 <p class="text-[8px] font-bold text-slate-400 uppercase">Status</p>
                                 <p class="text-sm font-bold text-blue-600" id="ai-status-val">Stabil</p>
@@ -164,7 +140,7 @@
             </div>
         </div>
         
-        <!-- Tab Lainnya -->
+        <!-- Tab Kasir -->
         <div id="kasir" class="tab-content space-y-6">
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-2/3">
@@ -196,6 +172,7 @@
             </div>
         </div>
 
+        <!-- Tab Stok -->
         <div id="stok" class="tab-content">
             <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden custom-shadow">
                 <div class="p-8 border-b flex justify-between items-center">
@@ -219,18 +196,17 @@
             </div>
         </div>
 
+        <!-- Tab Laporan -->
         <div id="laporan" class="tab-content space-y-6">
             <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden custom-shadow">
                 <div class="p-8 border-b flex flex-col md:flex-row justify-between items-center gap-4">
                     <h2 class="text-lg font-semibold text-slate-800">Laporan Penjualan</h2>
-                    <div class="flex items-center space-x-3 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
-                        <select id="filter-bulan" onchange="updateStats()" class="bg-transparent text-xs font-bold text-slate-600 border-none focus:ring-0 px-4">
-                            <option value="0">Semua Waktu</option>
-                            <option value="1">Januari 2026</option>
-                            <option value="2">Februari 2026</option>
-                            <option value="3" selected>Maret 2026</option>
-                        </select>
-                    </div>
+                    <select id="filter-bulan" onchange="updateStats()" class="bg-slate-50 text-xs font-bold text-slate-600 rounded-xl border-none px-4 py-2">
+                        <option value="0">Semua Waktu</option>
+                        <option value="1">Januari 2026</option>
+                        <option value="2">Februari 2026</option>
+                        <option value="3" selected>Maret 2026</option>
+                    </select>
                 </div>
                 <div class="p-8 border-b bg-slate-50/20 grid grid-cols-2 gap-8">
                     <div>
@@ -248,7 +224,7 @@
 
     </main>
 
-    <!-- Modal Input & Toast UI -->
+    <!-- Modal -->
     <div id="add-modal" class="fixed inset-0 bg-slate-900/40 hidden flex items-center justify-center p-4 z-[100] backdrop-blur-sm">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl">
             <h3 class="text-lg font-bold mb-6 text-slate-900 uppercase tracking-tighter">Tambah Data Barang</h3>
@@ -280,29 +256,17 @@
     <script>
         const TARGET_BULANAN = 20000000;
 
+        // STATE UTAMA
         let inventory = [
             { id: 1, nama: 'Beras Pandan Wangi 5kg', beli: 68000, jual: 82000, stok: 15, kategori: 'Sembako' },
             { id: 2, nama: 'Minyak Goreng 2L', beli: 31000, jual: 36500, stok: 24, kategori: 'Sembako' },
             { id: 3, nama: 'Aqua Galon 19L', beli: 17000, jual: 21000, stok: 12, kategori: 'Minuman' },
             { id: 4, nama: 'Indomie Goreng (Kardus)', beli: 110000, jual: 125000, stok: 8, kategori: 'Sembako' },
-            { id: 5, nama: 'Susu UHT 1L', beli: 16500, jual: 20500, stok: 20, kategori: 'Minuman' },
-            { id: 6, nama: 'Gula Pasir 1kg', beli: 14000, jual: 16500, stok: 40, kategori: 'Sembako' },
-            { id: 7, nama: 'Kopi Kapal Api 165g', beli: 12500, jual: 15000, stok: 18, kategori: 'Minuman' },
-            { id: 8, nama: 'Teh Celup Sariwangi', beli: 6500, jual: 8500, stok: 25, kategori: 'Minuman' },
-            { id: 9, nama: 'Chiki Balls Keju', beli: 4500, jual: 6000, stok: 30, kategori: 'Camilan' },
-            { id: 10, nama: 'Oreo Original', beli: 7200, jual: 9500, stok: 15, kategori: 'Camilan' },
-            { id: 11, nama: 'Buku Tulis Sidu 38lbr', beli: 3200, jual: 4500, stok: 50, kategori: 'ATK' },
-            { id: 12, nama: 'Pulpen Snowman Black', beli: 2200, jual: 3500, stok: 60, kategori: 'ATK' }
+            { id: 5, nama: 'Susu UHT 1L', beli: 16500, jual: 20500, stok: 20, kategori: 'Minuman' }
         ];
 
         let history = [
-            { id: 9001, waktu: '08:12', tanggal: '2026-03-01', total: 164000, laba: 28000, items: 'Beras Pandan Wangi 5kg (x2)' },
-            { id: 9002, waktu: '08:45', tanggal: '2026-03-01', total: 36500, laba: 5500, items: 'Minyak Goreng 2L (x1)' },
-            { id: 9003, waktu: '09:15', tanggal: '2026-03-01', total: 21000, laba: 4000, items: 'Aqua Galon 19L (x1)' },
-            { id: 8001, waktu: '18:00', tanggal: '2026-02-28', total: 12500000, laba: 1800000, items: 'Rekap Penjualan Akhir Bulan' },
-            { id: 8002, waktu: '10:00', tanggal: '2026-02-15', total: 8500000, laba: 1200000, items: 'Rekap Penjualan Tengah Bulan' },
-            { id: 7001, waktu: '18:00', tanggal: '2026-01-30', total: 9500000, laba: 1400000, items: 'Rekap Penjualan Januari' },
-            { id: 7002, waktu: '10:00', tanggal: '2026-01-10', total: 7500000, laba: 1100000, items: 'Stok Opname Awal' }
+            { id: 9001, waktu: '08:12', tanggal: '2026-03-01', total: 164000, laba: 28000, items: 'Beras Pandan Wangi 5kg (x2)' }
         ];
 
         let cart = [];
@@ -319,7 +283,8 @@
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+            const el = document.getElementById('clock');
+            if(el) el.innerText = now.toLocaleString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
         }
 
         function showTab(tabId) {
@@ -327,28 +292,41 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active-nav'));
             document.getElementById('btn-' + tabId).classList.add('active-nav');
+            
+            // Re-render saat pindah tab agar data selalu fresh
             if(tabId === 'dashboard') renderDashboard();
+            if(tabId === 'laporan') updateStats();
+            if(tabId === 'stok') renderStok();
+            if(tabId === 'kasir') renderProdukKasir();
         }
 
         function renderDashboard() {
             const now = new Date();
             const currentMonth = now.getMonth() + 1;
             const currentYear = now.getFullYear();
-            const todayStr = now.toISOString().split('T')[0];
+            
+            // Perbaikan: Gunakan waktu lokal, hindari masalah zona waktu dari toISOString()
+            const localMonth = String(currentMonth).padStart(2, '0');
+            const localDay = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${currentYear}-${localMonth}-${localDay}`;
 
+            // Omzet Bulan Ini
             const omzetMonth = history.filter(h => {
-                const hDate = new Date(h.tanggal);
-                return (hDate.getMonth() + 1) === currentMonth && hDate.getFullYear() === currentYear;
+                const parts = h.tanggal.split('-');
+                return parseInt(parts[1]) === currentMonth && parseInt(parts[0]) === currentYear;
             }).reduce((sum, h) => sum + h.total, 0);
 
+            // Laba Hari Ini
             const profitToday = history.filter(h => h.tanggal === todayStr).reduce((sum, h) => sum + h.laba, 0);
+
+            // Total Aset
             const assetValue = inventory.reduce((sum, item) => sum + (item.beli * item.stok), 0);
             const totalItems = inventory.reduce((sum, item) => sum + item.stok, 0);
 
-            document.getElementById('dash-omzet-month').innerText = `Rp ${omzetMonth.toLocaleString()}`;
-            document.getElementById('dash-asset-value').innerText = `Rp ${assetValue.toLocaleString()}`;
-            document.getElementById('dash-total-items').innerText = `${totalItems.toLocaleString()} Unit`;
-            document.getElementById('dash-profit-today').innerText = `Rp ${profitToday.toLocaleString()}`;
+            document.getElementById('dash-omzet-month').innerText = `Rp ${omzetMonth.toLocaleString('id-ID')}`;
+            document.getElementById('dash-asset-value').innerText = `Rp ${assetValue.toLocaleString('id-ID')}`;
+            document.getElementById('dash-total-items').innerText = `${totalItems.toLocaleString('id-ID')} Unit`;
+            document.getElementById('dash-profit-today').innerText = `Rp ${profitToday.toLocaleString('id-ID')}`;
 
             const percentage = Math.min((omzetMonth / TARGET_BULANAN) * 100, 100);
             document.getElementById('progress-bar').style.width = percentage + '%';
@@ -362,41 +340,17 @@
                 topList.appendChild(div);
             });
 
-            generateAIInsight(omzetMonth);
-        }
-
-        function generateAIInsight(currentOmzet) {
-            const febOmzet = history.filter(h => {
-                const d = new Date(h.tanggal);
-                return d.getMonth() + 1 === 2;
-            }).reduce((s, h) => s + h.total, 0);
-
-            const growth = febOmzet > 0 ? ((currentOmzet - (febOmzet/28)) / (febOmzet/28) * 100).toFixed(1) : 0;
-            
-            let insight = "";
-            let status = "Stabil";
-            
-            if (currentOmzet === 0) {
-                insight = "Bulan baru dimulai. Target Rp 20 Juta menanti. Pastikan stok sembako tetap penuh karena permintaan biasanya naik di awal bulan.";
-            } else if (currentOmzet < 5000000) {
-                insight = "Awal bulan yang cukup baik. Fokus pada produk Sembako yang memiliki perputaran cepat untuk mengejar target harian Rp 660rb."; status = "Waspada";
-            } else {
-                insight = "Performa bisnis solid. Tren menunjukkan pelanggan lebih sering berbelanja di pagi hari. Pertimbangkan promo bundling minuman."; status = "Sangat Baik";
-            }
-
-            document.getElementById('ai-insight-text').innerText = insight;
-            document.getElementById('ai-growth-val').innerText = (growth > 0 ? "+" : "") + growth + "%";
-            document.getElementById('ai-status-val').innerText = status;
-            document.getElementById('ai-status-val').className = `text-sm font-bold ${status === 'Sangat Baik' ? 'text-emerald-600' : 'text-blue-600'}`;
+            document.getElementById('ai-insight-text').innerText = omzetMonth > 1000000 ? "Performa bulan ini cukup baik, pertahankan stok barang utama." : "Bulan baru dimulai. Ayo tingkatkan penjualan!";
         }
 
         function filterCategory(cat) {
             currentCategoryFilter = cat;
             document.querySelectorAll('.cat-filter').forEach(btn => {
-                btn.classList.remove('bg-[#a50000]', 'text-white');
-                btn.classList.add('bg-white', 'text-slate-400');
+                btn.classList.replace('bg-[#a50000]', 'bg-white');
+                btn.classList.replace('text-white', 'text-slate-400');
             });
-            event.target.classList.add('bg-[#a50000]', 'text-white');
+            event.target.classList.replace('bg-white', 'bg-[#a50000]');
+            event.target.classList.replace('text-slate-400', 'text-white');
             renderProdukKasir();
         }
 
@@ -410,7 +364,7 @@
                 div.innerHTML = `
                     <p class="text-[7px] font-bold text-slate-300 uppercase mb-1">${item.kategori}</p>
                     <div class="text-[11px] font-medium text-slate-800 h-8 line-clamp-2 leading-tight">${item.nama}</div>
-                    <div class="text-xs font-bold text-[#a50000] mt-1">Rp ${item.jual.toLocaleString()}</div>
+                    <div class="text-xs font-bold text-[#a50000] mt-1">Rp ${item.jual.toLocaleString('id-ID')}</div>
                     <div class="text-[8px] text-slate-400 mt-1">Stok: ${item.stok}</div>
                 `;
                 container.appendChild(div);
@@ -419,10 +373,11 @@
 
         function addToCart(id) {
             const item = inventory.find(i => i.id === id);
+            if(item.stok <= 0) return showToast("Stok Habis!");
             const inCart = cart.find(c => c.id === id);
             if (inCart) {
                 if (inCart.qty < item.stok) inCart.qty++;
-                else showToast("Stok Habis");
+                else return showToast("Stok Terbatas!");
             } else {
                 cart.push({ ...item, qty: 1 });
             }
@@ -447,7 +402,7 @@
                 `;
                 container.appendChild(div);
             });
-            document.getElementById('cart-total').innerText = `Rp ${total.toLocaleString()}`;
+            document.getElementById('cart-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
             document.getElementById('cart-count').innerText = cart.length;
         }
 
@@ -461,25 +416,39 @@
         }
 
         function prosesTransaksi() {
-            if (cart.length === 0) return;
+            if (cart.length === 0) return showToast("Keranjang Kosong!");
+            
             let totalV = cart.reduce((sum, i) => sum + (i.jual * i.qty), 0);
             let labaV = cart.reduce((sum, i) => sum + ((i.jual - i.beli) * i.qty), 0);
+            
+            // Kurangi Stok
             cart.forEach(item => {
                 const invItem = inventory.find(i => i.id === item.id);
-                invItem.stok -= item.qty;
+                if(invItem) invItem.stok -= item.qty;
             });
+            
+            // Catat History dengan Format Tanggal Lokal
             const now = new Date();
+            const localMonth = String(now.getMonth() + 1).padStart(2, '0');
+            const localDay = String(now.getDate()).padStart(2, '0');
+            const localDateStr = `${now.getFullYear()}-${localMonth}-${localDay}`;
+            
             history.unshift({
-                id: Math.floor(Math.random() * 9000) + 1000,
+                id: Date.now(),
                 waktu: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-                tanggal: now.toISOString().split('T')[0],
+                tanggal: localDateStr,
                 total: totalV,
                 laba: labaV,
                 items: cart.map(c => `${c.nama} (x${c.qty})`).join(', ')
             });
+            
             cart = [];
-            renderCart(); renderProdukKasir(); renderStok(); renderDashboard(); updateStats();
-            showToast("Transaksi Berhasil");
+            renderCart();
+            renderProdukKasir();
+            renderStok();
+            renderDashboard();
+            updateStats();
+            showToast("Transaksi Berhasil!");
         }
 
         function renderStok() {
@@ -488,46 +457,51 @@
             inventory.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="px-8 py-5 font-medium text-slate-800 text-xs">${item.nama}</td>
-                    <td class="px-8 py-5 text-center font-bold text-xs ${item.stok < 10 ? 'text-red-500' : ''}">${item.stok}</td>
-                    <td class="px-8 py-5 text-right text-slate-400 text-xs">Rp ${item.beli.toLocaleString()}</td>
-                    <td class="px-8 py-5 text-right font-medium text-xs">Rp ${item.jual.toLocaleString()}</td>
-                    <td class="px-8 py-5 text-center">
-                        <button onclick="hapusBarang(${item.id})" class="text-slate-300 hover:text-red-500">
-                            <svg class="w-3 h-3 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                        </button>
-                    </td>
+                    <td class="px-8 py-5 font-medium text-xs">${item.nama}</td>
+                    <td class="px-8 py-5 text-center font-bold text-xs ${item.stok < 5 ? 'text-red-500' : ''}">${item.stok}</td>
+                    <td class="px-8 py-5 text-right text-xs">Rp ${item.beli.toLocaleString('id-ID')}</td>
+                    <td class="px-8 py-5 text-right text-xs">Rp ${item.jual.toLocaleString('id-ID')}</td>
+                    <td class="px-8 py-5 text-center"><button onclick="hapusBarang(${item.id})" class="text-red-400 text-[10px] uppercase font-bold">Hapus</button></td>
                 `;
                 body.appendChild(tr);
             });
         }
 
+        function hapusBarang(id) {
+            inventory = inventory.filter(i => i.id !== id);
+            renderStok();
+            renderDashboard();
+            showToast("Barang Dihapus");
+        }
+
         function updateStats() {
             const filterBulan = parseInt(document.getElementById('filter-bulan').value);
-            const filteredHistory = history.filter(h => {
+            const filtered = history.filter(h => {
                 if (filterBulan === 0) return true;
-                const hDate = new Date(h.tanggal);
-                return (hDate.getMonth() + 1) === filterBulan;
+                const parts = h.tanggal.split('-');
+                return parseInt(parts[1]) === filterBulan;
             });
-            const totalO = filteredHistory.reduce((sum, h) => sum + h.total, 0);
-            const totalL = filteredHistory.reduce((sum, h) => sum + h.laba, 0);
-            document.getElementById('stat-omzet').innerText = `Rp ${totalO.toLocaleString()}`;
-            document.getElementById('stat-profit').innerText = `Rp ${totalL.toLocaleString()}`;
+
+            const totalO = filtered.reduce((sum, h) => sum + h.total, 0);
+            const totalL = filtered.reduce((sum, h) => sum + h.laba, 0);
+
+            document.getElementById('stat-omzet').innerText = `Rp ${totalO.toLocaleString('id-ID')}`;
+            document.getElementById('stat-profit').innerText = `Rp ${totalL.toLocaleString('id-ID')}`;
+            
             const list = document.getElementById('history-list');
             list.innerHTML = '';
-            if(filteredHistory.length === 0) {
-                list.innerHTML = `<div class="p-20 text-center text-slate-300 text-xs uppercase tracking-widest font-bold">Tidak ada data transaksi</div>`;
-                return;
-            }
-            filteredHistory.forEach(h => {
+            filtered.forEach(h => {
                 const div = document.createElement('div');
-                div.className = "p-6 flex justify-between items-center hover:bg-slate-50 transition-colors";
+                div.className = "p-6 flex justify-between items-center border-b border-slate-50";
                 div.innerHTML = `
                     <div>
                         <p class="text-[8px] font-bold text-slate-300 uppercase">${h.tanggal} — ${h.waktu}</p>
-                        <p class="text-[10px] text-slate-500 italic">${h.items}</p>
+                        <p class="text-[10px] text-slate-500">${h.items}</p>
                     </div>
-                    <div class="text-right text-base font-light">Rp ${h.total.toLocaleString()}</div>
+                    <div class="text-right">
+                        <div class="text-sm font-light">Rp ${h.total.toLocaleString('id-ID')}</div>
+                        <div class="text-[8px] text-emerald-500 font-bold uppercase">Laba: Rp ${h.laba.toLocaleString('id-ID')}</div>
+                    </div>
                 `;
                 list.appendChild(div);
             });
@@ -537,19 +511,14 @@
 
         function tambahBarang() {
             const nama = document.getElementById('in-nama').value;
-            const kategori = document.getElementById('in-kategori').value;
             const beli = parseInt(document.getElementById('in-beli').value);
             const jual = parseInt(document.getElementById('in-jual').value);
             const stok = parseInt(document.getElementById('in-stok').value);
-            if(!nama || isNaN(beli)) return;
-            inventory.push({ id: Date.now(), nama, beli, jual, stok, kategori });
-            toggleAddModal(); renderProdukKasir(); renderStok(); renderDashboard();
-            showToast("Produk Disimpan");
-        }
+            const kategori = document.getElementById('in-kategori').value;
 
-        function hapusBarang(id) {
-            inventory = inventory.filter(i => i.id !== id);
-            renderStok(); renderProdukKasir(); showToast("Produk Dihapus");
+            if(!nama || isNaN(beli)) return showToast("Data tidak valid");
+            inventory.push({ id: Date.now(), nama, beli, jual, stok, kategori });
+            toggleAddModal(); renderStok(); renderDashboard(); showToast("Produk Ditambah");
         }
 
         function showToast(m) {
