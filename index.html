@@ -123,19 +123,19 @@
                 <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
                         <div class="flex items-center space-x-3 mb-4">
-                            <span class="bg-yellow-200/50 text-[9px] font-bold px-3 py-1 rounded-full uppercase border border-yellow-300/50 text-yellow-800">Trend & Insight Bisnis</span>
+                            <span class="bg-yellow-200/50 text-[9px] font-bold px-3 py-1 rounded-full uppercase border border-yellow-300/50 text-yellow-800">Operasional Insight</span>
                             <h2 class="text-lg font-extrabold tracking-tight uppercase text-slate-800">Analisis Performa</h2>
                         </div>
                         <p class="text-slate-600 text-sm font-light leading-relaxed mb-4" id="ai-insight-text">Menghitung data...</p>
                         <div class="flex space-x-2">
                             <div class="bg-white/60 px-3 py-2 rounded-xl border border-yellow-200/50">
-                                <p class="text-[8px] font-bold text-slate-400 uppercase">Status</p>
-                                <p class="text-sm font-bold text-blue-600" id="ai-status-val">Stabil</p>
+                                <p class="text-[8px] font-bold text-slate-400 uppercase">Efisiensi Stok</p>
+                                <p class="text-sm font-bold text-blue-600" id="ai-status-val">Normal</p>
                             </div>
                         </div>
                     </div>
                     <div class="bg-white/40 backdrop-blur-sm rounded-2xl p-5 border border-yellow-200">
-                        <p class="text-[9px] font-bold uppercase tracking-widest mb-3 opacity-70 text-center text-slate-500">Persediaan Tertinggi</p>
+                        <p class="text-[9px] font-bold uppercase tracking-widest mb-3 opacity-70 text-center text-slate-500">Kapasitas Gudang</p>
                         <div class="space-y-2" id="dash-top-items"></div>
                     </div>
                 </div>
@@ -268,7 +268,7 @@
     <script>
         const TARGET_BULANAN = 20000000;
 
-        // Inisialisasi Data Inventaris
+        // Data Inventaris
         let inventory = [
             { id: 1, nama: 'Beras Pandan Wangi 5kg', beli: 68000, jual: 82000, stok: 15, kategori: 'Sembako' },
             { id: 2, nama: 'Minyak Goreng 2L', beli: 31000, jual: 36500, stok: 24, kategori: 'Sembako' },
@@ -280,7 +280,7 @@
             { id: 81, nama: 'Buku Tulis Sidu 38', beli: 35000, jual: 45000, stok: 15, kategori: 'ATK' }
         ];
 
-        // Inisialisasi Data Riwayat Penjualan (Tersinkronisasi)
+        // Riwayat Penjualan
         let history = [
             { id: 9001, waktu: '08:12', tanggal: '2026-03-01', total: 164000, laba: 28000, items: 'Beras Pandan Wangi 5kg (x2)' }
         ];
@@ -309,30 +309,25 @@
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active-nav'));
             document.getElementById('btn-' + tabId).classList.add('active-nav');
             
-            // Refresh data setiap kali pindah tab agar selalu tersinkron
             if(tabId === 'dashboard') renderDashboard();
             if(tabId === 'laporan') updateStats();
             if(tabId === 'stok') renderStok();
             if(tabId === 'kasir') renderProdukKasir();
         }
 
-        // --- DASHBOARD LOGIC ---
         function renderDashboard() {
             const now = new Date();
-            const currentMonth = now.getMonth() + 1; // 1-12
+            const currentMonth = now.getMonth() + 1;
             const currentYear = now.getFullYear();
             
-            // Hitung omzet bulan ini berdasarkan array history
             const omzetMonth = history.filter(h => {
                 const parts = h.tanggal.split('-');
                 return parseInt(parts[1]) === currentMonth && parseInt(parts[0]) === currentYear;
             }).reduce((sum, h) => sum + h.total, 0);
 
-            // Hitung laba hari ini
             const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             const profitToday = history.filter(h => h.tanggal === todayStr).reduce((sum, h) => sum + h.laba, 0);
 
-            // Aset dan Stok
             const assetValue = inventory.reduce((sum, item) => sum + (item.beli * item.stok), 0);
             const totalItems = inventory.reduce((sum, item) => sum + item.stok, 0);
 
@@ -341,11 +336,9 @@
             document.getElementById('dash-total-items').innerText = `${totalItems.toLocaleString('id-ID')} Unit`;
             document.getElementById('dash-profit-today').innerText = `Rp ${profitToday.toLocaleString('id-ID')}`;
 
-            // Progress Bar Target
             const percentage = Math.min((omzetMonth / TARGET_BULANAN) * 100, 100);
             document.getElementById('progress-bar').style.width = percentage + '%';
 
-            // List Persediaan Tertinggi
             const topList = document.getElementById('dash-top-items');
             topList.innerHTML = '';
             [...inventory].sort((a,b) => b.stok - a.stok).slice(0, 5).forEach(item => {
@@ -355,26 +348,27 @@
                 topList.appendChild(div);
             });
 
-            // AI Insight
+            // OPERATIONAL INSIGHT LOGIC (Fokus pada Inventaris/Stok)
             const insightText = document.getElementById('ai-insight-text');
             const statusVal = document.getElementById('ai-status-val');
-            
-            if (omzetMonth >= TARGET_BULANAN) {
-                insightText.innerText = "Luar biasa! Target bulanan tercapai. Pertimbangkan ekspansi stok.";
-                statusVal.innerText = "Sangat Baik";
-                statusVal.className = "text-sm font-bold text-emerald-600";
-            } else if (omzetMonth > (TARGET_BULANAN * 0.5)) {
-                insightText.innerText = "Performa stabil. Fokus pada item paling laris untuk mengejar target.";
-                statusVal.innerText = "Stabil";
-                statusVal.className = "text-sm font-bold text-blue-600";
-            } else {
-                insightText.innerText = "Penjualan masih di bawah target awal. Coba strategi promosi harian.";
-                statusVal.innerText = "Perlu Perhatian";
+            const lowStockCount = inventory.filter(i => i.stok < 5).length;
+            const deadStockCount = inventory.filter(i => i.stok > 30).length;
+
+            if (lowStockCount > 0) {
+                insightText.innerText = `Peringatan: Terdapat ${lowStockCount} produk dengan stok kritis (di bawah 5 unit). Segera lakukan pemesanan ulang untuk menjaga ketersediaan barang.`;
+                statusVal.innerText = "Restok Segera";
+                statusVal.className = "text-sm font-bold text-red-600";
+            } else if (deadStockCount > 0) {
+                insightText.innerText = "Stok barang melimpah. Pastikan rotasi barang (FIFO) berjalan baik untuk menghindari barang kadaluarsa atau menumpuk di gudang.";
+                statusVal.innerText = "Stok Tinggi";
                 statusVal.className = "text-sm font-bold text-amber-600";
+            } else {
+                insightText.innerText = "Keseimbangan stok terjaga dengan baik. Distribusi barang antar kategori terlihat proporsional dengan kapasitas penyimpanan saat ini.";
+                statusVal.innerText = "Optimal";
+                statusVal.className = "text-sm font-bold text-blue-600";
             }
         }
 
-        // --- KASIR LOGIC ---
         function filterCategory(cat, el) {
             currentCategoryFilter = cat;
             document.querySelectorAll('.cat-filter').forEach(btn => {
@@ -406,7 +400,6 @@
         function addToCart(id) {
             const item = inventory.find(i => i.id === id);
             if(item.stok <= 0) return showToast("Stok Habis!");
-            
             const inCart = cart.find(c => c.id === id);
             if (inCart) {
                 if (inCart.qty < item.stok) inCart.qty++;
@@ -450,18 +443,15 @@
 
         function prosesTransaksi() {
             if (cart.length === 0) return showToast("Keranjang Kosong!");
-            
             let totalV = cart.reduce((sum, i) => sum + (i.jual * i.qty), 0);
             let totalBeli = cart.reduce((sum, i) => sum + (i.beli * i.qty), 0);
             let labaV = totalV - totalBeli;
             
-            // Update Stok di Inventory
             cart.forEach(item => {
                 const invItem = inventory.find(i => i.id === item.id);
                 if(invItem) invItem.stok -= item.qty;
             });
             
-            // Catat ke History
             const now = new Date();
             const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
@@ -475,16 +465,12 @@
                 items: cart.map(c => `${c.nama} (x${c.qty})`).join(', ')
             });
             
-            // Reset Kasir
             cart = [];
             renderCart();
             renderProdukKasir();
-            
-            // Feedback
             showToast("Transaksi Berhasil!");
         }
 
-        // --- STOK LOGIC ---
         function renderStok() {
             const body = document.getElementById('stok-table-body');
             body.innerHTML = '';
@@ -509,7 +495,6 @@
             const kategori = document.getElementById('in-kategori').value;
 
             if(!nama || isNaN(beli) || isNaN(jual) || isNaN(stok)) return showToast("Data tidak lengkap!");
-            
             inventory.push({ id: Date.now(), nama, beli, jual, stok, kategori });
             toggleAddModal(); 
             renderStok();
@@ -524,7 +509,6 @@
 
         function toggleAddModal() { document.getElementById('add-modal').classList.toggle('hidden'); }
 
-        // --- LAPORAN LOGIC ---
         function updateStats() {
             const filterBulan = parseInt(document.getElementById('filter-bulan').value);
             const filtered = history.filter(h => {
@@ -541,7 +525,6 @@
             
             const list = document.getElementById('history-list');
             list.innerHTML = '';
-            
             if (filtered.length === 0) {
                 list.innerHTML = '<div class="p-8 text-center text-[10px] text-slate-400 uppercase tracking-widest">Tidak ada data penjualan</div>';
                 return;
@@ -567,14 +550,12 @@
         function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
             const filterBulan = document.getElementById('filter-bulan');
             const bulanText = filterBulan.options[filterBulan.selectedIndex].text;
             
             doc.setFontSize(18);
             doc.setTextColor(165, 0, 0);
             doc.text("IMAM MART - LAPORAN PENJUALAN", 14, 20);
-            
             doc.setFontSize(10);
             doc.setTextColor(100);
             doc.text(`Periode: ${bulanText}`, 14, 28);
@@ -589,19 +570,12 @@
 
             const omzet = filteredData.reduce((s, h) => s + h.total, 0);
             const laba = filteredData.reduce((s, h) => s + h.laba, 0);
-            
             doc.setFontSize(11);
             doc.setTextColor(0);
             doc.text(`Total Omzet: Rp ${omzet.toLocaleString('id-ID')}`, 14, 45);
             doc.text(`Total Laba: Rp ${laba.toLocaleString('id-ID')}`, 14, 52);
 
-            const tableRows = filteredData.map(h => [
-                h.tanggal,
-                h.items,
-                `Rp ${h.total.toLocaleString('id-ID')}`,
-                `Rp ${h.laba.toLocaleString('id-ID')}`
-            ]);
-
+            const tableRows = filteredData.map(h => [h.tanggal, h.items, `Rp ${h.total.toLocaleString('id-ID')}`, `Rp ${h.laba.toLocaleString('id-ID')}`]);
             doc.autoTable({
                 startY: 60,
                 head: [['Tanggal', 'Item', 'Total', 'Laba']],
@@ -609,12 +583,8 @@
                 theme: 'grid',
                 headStyles: { fillColor: [165, 0, 0] },
                 styles: { fontSize: 8 },
-                columnStyles: {
-                    2: { halign: 'right' },
-                    3: { halign: 'right' }
-                }
+                columnStyles: { 2: { halign: 'right' }, 3: { halign: 'right' } }
             });
-
             doc.save(`Laporan_ImamMart_${bulanText.replace(' ', '_')}.pdf`);
             showToast("PDF Berhasil Diunduh");
         }
